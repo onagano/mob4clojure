@@ -1,0 +1,41 @@
+#+TITLE: MOB for Clojure
+#+DESCRIPTION: An application of MOB (MT4-ODBC Bridge) for Clojure programming language
+
+* About MOB for Clojure
+
+This is a simple application of [[https://github.com/onagano/mt4-odbc-bridge][MOB]] using Clojure, a modern Lisp
+dialect with rich functional programming support.
+
+[[https://github.com/onagano/mt4-odbc-bridge][MOB]] enables you to operate MetaTrader4, a popular algorithmic trading
+platform, via arbitrary RDBMS. See the link for more details.
+
+MOB obviously requires a RDBMS that has its ODBC driver. Popular ones
+are MySQL, PostgreSQL, SQLite, etc. For Java programming language,
+there are decent RDBMS implementations like HSQLDB, Derby, and
+[[http://www.h2database.com/html/main.html][H2 database]]. Those can be run as a stand-alone server as well as
+an embedded database inside your application, and you may get some
+advantages by using the same programming languages with the database
+and your application.
+
+Especially [[http://www.h2database.com/html/main.html][H2 database]] has
+[[http://www.h2database.com/html/features.html#comparison][good features]] comparing to other databases. And important point for
+MOB application, it can talk PostgreSQL protocol so that you can use
+PostgreSQL's ODBC driver.
+
+MOB4Clojure adopts H2 database as the server side. And it also
+provides some handy client side functions to operate MT4 over
+MOB. Both sides can be in the same process, because H2 database is
+embeddable, so that you can integrate them tightly if you want.  For
+example, you can write a database trigger that manipulates arbitrary
+Java objects without network IO.
+
+
+* Usage
+
+FIXME: write
+
+* License
+
+Copyright (C) 2011 Osamu Nagano
+
+Distributed under the Eclipse Public License, the same as Clojure.
