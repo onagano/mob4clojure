@@ -65,3 +65,13 @@
     tz
     (do (swap! timezone (fn [_] (init-timezone)))
         @timezone)))
+
+(defn clojure-case
+  "Returns a string which is lower-cased and replaced all '_' with '-'."
+  [^String str]
+  (-> str .toLowerCase (.replaceAll "_" "-")))
+
+(defn sql-case
+  "Returns a string which is upper-cased and replaced all '-' with '_'."
+  [^String str]
+  (-> str .toUpperCase (.replaceAll "-" "_")))
