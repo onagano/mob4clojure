@@ -23,10 +23,18 @@
   (str tab-prefix "TRADE"))
 
 (defn- to-sql-case-map
+  "The keys are upper case strings with '_'."
   [m]
   (apply hash-map
          (apply concat
-                (for [k (keys m)] [(util/sql-case (name k)) (k m)]))))
+                (for [k (keys m)] [(util/sql-case (name k)) (m k)]))))
+
+(defn- to-clojure-case-map
+  "The keys are lower case keywords with '-'."
+  [m]
+  (apply hash-map
+         (apply concat
+                (for [k (keys m)] [(keyword (util/clojure-case (name k))) (m k)]))))
 
 (defn- insert-order
   "Insert an order map and returns its ID (not ticket)."
@@ -58,7 +66,7 @@
   (sql/with-connection db-spec
     (let [id (insert-order ord)]
       (Thread/sleep 100)
-      (select-order-until id))))
+      (to-clojure-case-map (select-order-until id)))))
 
 (defn open-trades
   "Current open trades."
@@ -67,7 +75,7 @@
     (sql/with-query-results rs
       [(str "SELECT * FROM " trade-tab
             " WHERE CLOSE_TIME = '1970-01-01 00:00:00.0' ORDER BY TICKET")]
-      (doall rs))))
+      (map to-clojure-case-map (doall rs)))))
 
 (defn trade
   "Returns a trade status. Only search TRADE table for it, doesn't HISTORY table."
@@ -75,4 +83,4 @@
   (sql/with-connection db-spec
     (sql/with-query-results rs
       [(str "SELECT * FROM " trade-tab " WHERE TICKET = ?") ticket]
-      (first rs))))
+      (to-clojure-case-map (first rs)))))
