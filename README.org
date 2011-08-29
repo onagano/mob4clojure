@@ -1,5 +1,5 @@
 #+TITLE: MOB for Clojure
-#+DESCRIPTION: An application of MOB (MT4-ODBC Bridge) for Clojure programming language
+#+KEYWORDS: mt4 metatrader odbc rdb rdbms relational database sql historical data export order trade
 
 * About MOB for Clojure
 

@@ -3,6 +3,8 @@
   (:import [java.util Properties Calendar Locale TimeZone SimpleTimeZone]))
 
 
+;;;; Configuration
+
 (defvar- config (atom nil))
 
 (defn- init-config
@@ -22,6 +24,9 @@
     (do (swap! config (fn [_] (init-config)))
         @config)))
 
+
+;;;; Helper functions for timezone and locale
+
 (defn find-timezone
   [ptn]
   (for [tz (TimeZone/getAvailableIDs)
@@ -33,6 +38,9 @@
 	:when (re-find (re-pattern (str "(?i)" ptn))
 		       (.getDisplayName lc Locale/US))]
     [(.getDisplayName lc Locale/US) lc]))
+
+
+;;;; Timezone
 
 (defvar- fxddmalta-tz
   (SimpleTimeZone. (* 2 60 60 1000) "Custom/FXDD_Malta"
@@ -51,6 +59,7 @@
 (defvar- timezone (atom nil))
 
 (defn- init-timezone
+  "Looks custom timezones first then falls back in JDK's one."
   []
   (let [tzid (:mob4clojure.mt4.timezone (get-config))
         custz (custom-timezones tzid)]
@@ -65,6 +74,9 @@
     tz
     (do (swap! timezone (fn [_] (init-timezone)))
         @timezone)))
+
+
+;;;; Identifier case conversion
 
 (defn clojure-case
   "Returns a string which is lower-cased and replaced all '_' with '-'."

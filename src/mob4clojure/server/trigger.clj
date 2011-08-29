@@ -1,7 +1,7 @@
-(ns mob4clojure.trigger
+(ns mob4clojure.server.trigger
   (:import [org.h2.api Trigger])
   (:gen-class
-   :name mob4clojure.GenericTrigger
+   :name mob4clojure.server.GenericTrigger
    :implements [org.h2.api.Trigger]
    :state state
    :init cljinit)
@@ -24,7 +24,7 @@
 
 ;; How to register a trigger in H2:
 ;; CREATE TRIGGER trigger AFTER [UPDATE|...] ON table
-;;   FOR EACH ROW CALL "mob4clojure.GenericTrigger"
+;;   FOR EACH ROW CALL "mob4clojure.server.GenericTrigger"
 ;; http://www.h2database.com/html/grammar.html#create_trigger
 
 (defn -cljinit
