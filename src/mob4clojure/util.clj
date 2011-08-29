@@ -1,6 +1,7 @@
 (ns mob4clojure.util
   (:use [clojure.contrib.def :only [defvar defvar-]])
-  (:import [java.util Properties Calendar Locale TimeZone SimpleTimeZone]))
+  (:import [java.util Properties Calendar Locale TimeZone SimpleTimeZone])
+  (:import [org.joda.time DateTime DateTimeZone]))
 
 
 ;;;; Configuration
@@ -56,6 +57,15 @@
   {(.getID fxddmalta-tz) fxddmalta-tz}
   "User defined timezones.")
 
+(def joda-timezones
+  {:sydney    (DateTimeZone/forID "Australia/Sydney")
+   :tokyo     (DateTimeZone/forID "Asia/Tokyo")
+   :fxddmalta (DateTimeZone/forTimeZone fxddmalta-tz)
+   :london    (DateTimeZone/forID "Europe/London")
+   :utc       (DateTimeZone/forID "Etc/UTC")
+   :newyork   (DateTimeZone/forID "America/New_York")
+   :default   (DateTimeZone/getDefault)})
+
 (defvar- timezone (atom nil))
 
 (defn- init-timezone
@@ -74,6 +84,10 @@
     tz
     (do (swap! timezone (fn [_] (init-timezone)))
         @timezone)))
+
+(defvar server-epoch
+  (.toDate (DateTime. 1970 1 1 0 0 0 0 (DateTimeZone/forTimeZone (get-timezone))))
+  "Returns JDK Date object at 1970-01-01 00:00:00.0 in the instance's timezone")
 
 
 ;;;; Identifier case conversion
